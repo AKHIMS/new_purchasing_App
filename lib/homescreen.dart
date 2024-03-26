@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/cart_screen.dart';
 import 'package:flutter_application_1/widget/product_card.dart';
-// Import CartScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -143,8 +142,12 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         onTap: (index) {
-          // Handle navigation for BottomNavigationBar
-         
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CartScreen()),
+            );
+          }
         },
         type: BottomNavigationBarType.fixed,
         items: [

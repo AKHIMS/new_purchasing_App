@@ -5,31 +5,15 @@ import 'package:flutter_application_1/screens/cart_screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
-class ProductScreen extends StatefulWidget {
+class ProductScreen extends StatelessWidget {
   final String img;
 
   const ProductScreen(this.img);
 
   @override
-  _ProductScreenState createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<ProductScreen> {
-  late String selectedImage;
-  late String selectedPrice;
-
-  @override
-  void initState() {
-    selectedImage = widget.img;
-    selectedPrice = "\$300.54";
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(
-      builder: (context, cartProvider, child) {
+      builder: (context, cartProvider, _) {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -42,7 +26,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       image: DecorationImage(
-                        image: AssetImage("images/${widget.img}.png"),
+                        image: AssetImage("images/$img.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -51,31 +35,17 @@ class _ProductScreenState extends State<ProductScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: () {
+                          IconButton(
+                            onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Icon(Icons.arrow_back_ios_new, size: 22),
-                            ),
+                            icon: Icon(Icons.arrow_back_ios_new),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
+                          IconButton(
+                            onPressed: () {
+                              // Handle favorite action
                             },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Icon(Icons.favorite, size: 22, color: Colors.red),
-                            ),
+                            icon: Icon(Icons.favorite, color: Colors.red),
                           ),
                         ],
                       ),
@@ -83,7 +53,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 15, right: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -91,7 +61,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              widget.img,
+                              img,
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
@@ -137,36 +107,30 @@ class _ProductScreenState extends State<ProductScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding: const EdgeInsets.all(18),
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 186, 123, 123),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Icon(Icons.shop),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                // Store selected image and price
-                                cartProvider.addItem(CartItem(img: widget.img, price: '\$300.54'),); 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
+                            IconButton(
+                              onPressed: () {
+                                // Handle shopping cart action
                               },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 70),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFFF6262),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
+                              icon: Icon(Icons.shop),
+                              iconSize: 30,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                cartProvider.addItem(CartItem(img: img, price: 300.54));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFFFF6262),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 30),
                                 child: Text(
                                   "Buy Now",
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 1,
-                                    color: Colors.white,
                                   ),
                                 ),
                               ),
